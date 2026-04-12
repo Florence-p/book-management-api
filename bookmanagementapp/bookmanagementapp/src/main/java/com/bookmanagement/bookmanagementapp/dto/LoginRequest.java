@@ -1,12 +1,11 @@
 package com.bookmanagement.bookmanagementapp.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 
-@Data
-public class LoginRequest {
-    @NotBlank
-    private String username;
-    @NotBlank
-    private String password;
+public record LoginRequest(
+        @NotBlank(message = "Username is required")
+        String username,
+        @NotBlank(message = "Password is required")
+        String password
+) {
 }

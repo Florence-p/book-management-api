@@ -1,31 +1,19 @@
 package com.bookmanagement.bookmanagementapp.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class BookDetailResponse {
-    private Long id;
-
-    private String title;
-
-    private String isbn;
-
-    private LocalDate publishedDate;
-
-    private AuthorDetailDto author;
-
-    private List<CategoryResponse> categories;
-
-    private double rating;
-
-    private List<ReviewResponse> reviews;
+public record BookDetailResponse(
+        Long id,
+        String title,
+        String isbn,
+        LocalDate publishedDate,
+        AuthorDetailDto author,
+        List<CategoryResponse> categories,
+        BigDecimal rating,
+        List<ReviewResponse> reviews
+) {
+    public record AuthorDetailDto(Long id, String name, String email, String bio) {
+    }
 }

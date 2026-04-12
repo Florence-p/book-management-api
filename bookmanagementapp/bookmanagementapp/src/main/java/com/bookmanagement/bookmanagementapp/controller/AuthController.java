@@ -10,7 +10,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
@@ -23,7 +26,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+                new UsernamePasswordAuthenticationToken(request.username(), request.password())
         );
 
         String role = authentication.getAuthorities().stream()
@@ -32,8 +35,10 @@ public class AuthController {
                 .orElse("ROLE_USER")
                 .replace("ROLE_", "");
 
-        String token = jwtUtil.generateToken(request.getUsername(), role);
-
-        return ResponseEntity.ok(new LoginResponse(token, request.getUsername(), role));
+        return ResponseEntity.ok(new LoginResponse(
+                jwtUtil.generateToken(request.username(), role),
+                request.username(),
+                role
+        ));
     }
 }

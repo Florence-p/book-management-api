@@ -1,17 +1,11 @@
 package com.bookmanagement.bookmanagementapp.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Size;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class CategoryRequest {
-
-    @NotBlank(message = "Category name is required")
-    private String name;
+public record CategoryRequest(
+        @NotBlank(message = "Category name is required")
+        @Size(max = 100, message = "Category name must not exceed 100 characters")
+        String name
+) {
 }

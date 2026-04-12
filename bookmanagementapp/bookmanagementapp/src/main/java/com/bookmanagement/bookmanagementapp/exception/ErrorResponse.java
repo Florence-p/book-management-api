@@ -1,13 +1,17 @@
 package com.bookmanagement.bookmanagementapp.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-@Data
-@AllArgsConstructor
-public class ErrorResponse {
-    private int status;
-    private String message;
-    private LocalDateTime timestamp;
+import java.time.LocalDateTime;
+import java.util.Map;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public record ErrorResponse(
+        LocalDateTime timestamp,
+        int status,
+        String error,
+        String message,
+        String path,
+        Map<String, String> validationErrors
+) {
 }

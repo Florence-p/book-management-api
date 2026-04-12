@@ -7,9 +7,14 @@ import com.bookmanagement.bookmanagementapp.dto.AuthorSummaryResponse;
 import java.util.List;
 
 public interface AuthorService {
+
     List<AuthorSummaryResponse> getAllAuthors();
+
     AuthorDetailResponse getAuthorById(Long id);
-    AuthorSummaryResponse createAuthor(AuthorRequest request);
-    AuthorSummaryResponse updateAuthor(Long id, AuthorRequest request);
+
+    AuthorDetailResponse createAuthor(AuthorRequest request);
+
+    AuthorDetailResponse updateAuthor(Long id, AuthorRequest request);
+
     void deleteAuthor(Long id);
 }

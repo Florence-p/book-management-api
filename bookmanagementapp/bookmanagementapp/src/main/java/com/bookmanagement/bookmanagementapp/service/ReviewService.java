@@ -1,13 +1,18 @@
 package com.bookmanagement.bookmanagementapp.service;
 
-import com.bookmanagement.bookmanagementapp.dto.ReviewRequest;
+import com.bookmanagement.bookmanagementapp.dto.ReviewCreateRequest;
 import com.bookmanagement.bookmanagementapp.dto.ReviewResponse;
+import com.bookmanagement.bookmanagementapp.dto.ReviewUpdateRequest;
 
 import java.util.List;
 
 public interface ReviewService {
-    ReviewResponse createReview(Long bookId, ReviewRequest request);
+
+    ReviewResponse createReview(Long bookId, ReviewCreateRequest request);
+
     List<ReviewResponse> getReviewsByBook(Long bookId);
-    ReviewResponse updateReview(Long id, ReviewRequest request);
+
+    ReviewResponse updateReview(Long id, ReviewUpdateRequest request);
+
     void deleteReview(Long id);
 }

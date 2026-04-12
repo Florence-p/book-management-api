@@ -1,30 +1,36 @@
 package com.bookmanagement.bookmanagementapp.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class User {
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-@Column(nullable = false)
+
+    @Column(nullable = false, unique = true, length = 100)
     private String username;
-@Column(nullable = false, unique = true)
+
+    @Column(nullable = false, unique = true, length = 150)
     private String email;
 
-@Column(nullable = false)
+    @Column(nullable = false)
     private String password;
 
-@Enumerated(EnumType.STRING)
-    Role role;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Role role;
 }
