@@ -32,22 +32,28 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(restAuthenticationEntryPoint)
                         .accessDeniedHandler(restAccessDeniedHandler))
                 .authorizeHttpRequests(authorize -> authorize
+                        // fully public — no token needed
                         .requestMatchers("/auth/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/books/**", "/authors/**", "/categories/**").permitAll()
+                        // requires valid token but any role
                         .requestMatchers(HttpMethod.POST, "/books/*/reviews").authenticated()
                         .requestMatchers(HttpMethod.GET, "/users/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/users/**", "/reviews/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/users/**", "/reviews/**").authenticated()
+                        // admin only
+                        .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/books/**", "/authors/**", "/categories/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/books/**", "/authors/**", "/categories/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/books/**", "/authors/**", "/categories/**").hasRole("ADMIN")
+                        // everything else requires at least a valid token
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
